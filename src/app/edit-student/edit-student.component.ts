@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 
 export class EditStudentComponent implements OnInit {
   editForm: UntypedFormGroup;
-  
+
   constructor(
     private crudApi: CrudService,
     private fb: UntypedFormBuilder,
@@ -26,7 +26,7 @@ export class EditStudentComponent implements OnInit {
   ngOnInit() {
     this.updateStudentData();
     const id = this.actRoute.snapshot.paramMap.get('id');
-    this.crudApi.GetStudent(id).valueChanges().subscribe(data => {
+    this.crudApi.GetStudent(id).subscribe(data => {
       this.editForm.setValue(data)
     })
   }
@@ -45,7 +45,7 @@ export class EditStudentComponent implements OnInit {
 
   get mobileNumber() {
     return this.editForm.get('mobileNumber');
-  }  
+  }
 
   updateStudentData() {
     this.editForm = this.fb.group({

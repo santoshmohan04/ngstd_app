@@ -1,53 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Student } from '../shared/student';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Firestore, CollectionReference, docData } from '@angular/fire/firestore';
+import { addDoc, deleteDoc, doc, DocumentReference, updateDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CrudService {
-  studentsRef: AngularFireList<any>;
-  studentRef: AngularFireObject<any>;
-  
-  constructor(private db: AngularFireDatabase) { }
+  studentsRef: CollectionReference<any>;
+  studentRef: DocumentReference<any>;
+
+  constructor(private db: Firestore) { }
 
   // Create Student
   AddStudent(student: Student) {
-    this.studentsRef.push({
+    return addDoc(this.studentsRef, {
       firstName: student.firstName,
       lastName: student.lastName,
       email: student.email,
       mobileNumber: student.mobileNumber
-    })
+    });
   }
 
   // Fetch Single Student Object
   GetStudent(id: string) {
-    this.studentRef = this.db.object('students-list/' + id);
-    return this.studentRef;
+    const studentData = doc(this.db, 'students-list/' + id);
+    return docData(studentData);
   }
 
   // Fetch Students List
   GetStudentsList() {
-    this.studentsRef = this.db.list('students-list');
-    return this.studentsRef;
-  }  
+    const studentsData = doc(this.db, 'students-list');
+    return docData(studentsData);
+  }
 
   // Update Student Object
   UpdateStudent(student: Student) {
-    this.studentRef.update({
+    return updateDoc(this.studentRef, {
       firstName: student.firstName,
       lastName: student.lastName,
       email: student.email,
       mobileNumber: student.mobileNumber
     })
-  }  
+  }
 
   // Delete Student Object
-  DeleteStudent(id: string) { 
-    this.studentRef = this.db.object('students-list/'+id);
-    this.studentRef.remove();
+  DeleteStudent(id: string) {
+    const deletestudentData = doc(this.db, 'students-list/'+id);
+    return deleteDoc(deletestudentData);
   }
-  
+
 }

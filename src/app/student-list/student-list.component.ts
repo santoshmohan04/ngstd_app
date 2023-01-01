@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudService } from '../shared/crud.service';
-import { Student } from './../shared/student'; 
+import { Student } from './../shared/student';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -16,7 +16,7 @@ export class StudentListComponent implements OnInit {
   hideWhenNoStudent: boolean = false;
   noData: boolean = false;
   preLoader: boolean = true;
-  
+
 
   constructor(
     public crudApi: CrudService,
@@ -26,19 +26,19 @@ export class StudentListComponent implements OnInit {
 
   ngOnInit() {
     this.dataState();
-    let s = this.crudApi.GetStudentsList(); 
-    s.snapshotChanges().subscribe(data => {
+    let s = this.crudApi.GetStudentsList();
+    s.subscribe(data => {
       this.Student = [];
       data.forEach(item => {
-        let a = item.payload.toJSON(); 
+        let a = item.payload.toJSON();
         a['$key'] = item.key;
         this.Student.push(a as Student);
       })
     })
   }
 
-  dataState() {     
-    this.crudApi.GetStudentsList().valueChanges().subscribe(data => {
+  dataState() {
+    this.crudApi.GetStudentsList().subscribe(data => {
       this.preLoader = false;
       if(data.length <= 0){
         this.hideWhenNoStudent = false;
@@ -51,7 +51,7 @@ export class StudentListComponent implements OnInit {
   }
 
   deleteStudent(student) {
-    if (window.confirm('Are sure you want to delete this student ?')) { 
+    if (window.confirm('Are sure you want to delete this student ?')) {
       this.crudApi.DeleteStudent(student.$key)
       this.toastr.success(student.firstName + ' successfully deleted!');
     }

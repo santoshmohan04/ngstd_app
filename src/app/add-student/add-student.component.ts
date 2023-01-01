@@ -12,14 +12,14 @@ import { ToastrService } from 'ngx-toastr';
 
 export class AddStudentComponent implements OnInit {
   public studentForm: UntypedFormGroup;
- 
+
   constructor(
     public crudApi: CrudService,
     public fb: UntypedFormBuilder,
     public toastr: ToastrService
   ) { }
 
- 
+
   ngOnInit() {
     this.crudApi.GetStudentsList();
     this.studenForm();
@@ -31,7 +31,7 @@ export class AddStudentComponent implements OnInit {
       lastName: [''],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
-    })  
+    })
   }
 
   get firstName() {
@@ -40,7 +40,7 @@ export class AddStudentComponent implements OnInit {
 
   get lastName() {
     return this.studentForm.get('lastName');
-  }  
+  }
 
   get email() {
     return this.studentForm.get('email');
@@ -52,8 +52,8 @@ export class AddStudentComponent implements OnInit {
 
   ResetForm() {
     this.studentForm.reset();
-  }  
- 
+  }
+
   submitStudentData() {
     console.log(this.studentForm.value)
     this.crudApi.AddStudent(this.studentForm.value);

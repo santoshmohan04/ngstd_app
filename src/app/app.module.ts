@@ -11,8 +11,8 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Import Firebase modules + environment
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 // Toastr module
@@ -33,8 +33,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ReactiveFormsModule,
